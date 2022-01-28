@@ -15,9 +15,9 @@ def index():
                         ('number_2', number_2),
                         )
                         front_hostname = (socket.gethostname())
-                        resp = requests.get('http://192.168.240.3:5000/calc', params=params)
+                        resp = requests.get('http://192.168.240.4:5000/calc', params=params)
                         back_calc = (resp.json())
-                        hostname = requests.get('http://192.168.240.3:5000/hostname')
+                        hostname = requests.get('http://192.168.240.4:5000/hostname')
                         back_hostname = (hostname.text)
                         return render_template("index.html", calc = calc, back_calc = back_calc, back_hostname = back_hostname, front_hostname = front_hostname)
 

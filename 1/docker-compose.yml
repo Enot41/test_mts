@@ -1,16 +1,22 @@
 version: '3'
 services:
   front:
-    build: ./front
+    image: nginx
     volumes:
-    - ./front/app:/app
     - ./front/nginx-front.conf:/etc/nginx/conf.d/nginx-front.conf
-    working_dir: /app
     ports:
-      - 5000:5000
+      - 80:80
     networks:
       net:
         ipv4_address: 192.168.240.2
+  front_python:
+    build: ./front
+    volumes:
+    - ./front/app:/app
+    working_dir: /app
+    networks:
+      net:
+        ipv4_address: 192.168.240.3    
   back:  
     build: ./back
     volumes:
@@ -18,7 +24,7 @@ services:
     working_dir: /app
     networks:
       net:
-        ipv4_address: 192.168.240.3
+        ipv4_address: 192.168.240.4
 networks:
   net:
     driver: bridge
