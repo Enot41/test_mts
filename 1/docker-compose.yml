@@ -1,0 +1,27 @@
+version: '3'
+services:
+  front:
+    build: ./front
+    volumes:
+    - ./front/app:/app
+    - ./front/nginx-front.conf:/etc/nginx/conf.d/nginx-front.conf
+    working_dir: /app
+    ports:
+      - 5000:5000
+    networks:
+      net:
+        ipv4_address: 192.168.240.2
+  back:  
+    build: ./back
+    volumes:
+    - ./back/app:/app
+    working_dir: /app
+    networks:
+      net:
+        ipv4_address: 192.168.240.3
+networks:
+  net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.240.0/24
