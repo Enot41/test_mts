@@ -1,0 +1,22 @@
+- name: Install and Configured Front-Python
+  hosts: front_python
+  tasks:
+  - name: Install python
+    apt:
+      pkg:
+      - python3
+      - python3-pip  
+  - name: Install pip package       
+    pip:
+      name:
+        - flask
+        - requests
+  - name: Copy App 
+    copy:
+      src: front/app
+      dest: /home
+  - name: Run a script using an executable in a system path
+    become: yes
+    command: python3 /home/app/app.py
+    async: 1000
+    poll: 0

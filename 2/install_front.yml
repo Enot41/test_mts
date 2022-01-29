@@ -1,0 +1,19 @@
+- name: Install and Configured Front
+  hosts: front 
+  tasks:
+  - name: Install nginx
+    apt:
+      pkg:
+      - nginx      
+  - name: Copy nginx conf
+    copy:
+      src: front/nginx-front.conf
+      dest: /etc/nginx/conf.d/nginx-front.conf
+    notify: 
+      - Restart nginx
+  handlers:
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
+

@@ -1,0 +1,25 @@
+version: '3'
+services:
+  front:
+    build: .
+    ports:
+      - 80:80
+    networks:
+      net:
+        ipv4_address: 192.168.241.2
+  front_python:
+    build: .
+    networks:
+      net:
+        ipv4_address: 192.168.241.3    
+  back:  
+    build: .
+    networks:
+      net:
+        ipv4_address: 192.168.241.4
+networks:
+  net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.241.0/24
