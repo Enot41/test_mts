@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+      tier: front-nginx
+  template:
+    metadata:
+      labels:
+        app: my-app
+        tier: front-nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: config
+          mountPath: /etc/nginx/conf.d/
+      volumes:
+      - name: config
+        configMap:
+          name: my-configmap
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-python
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+      tier: front-python
+  template:
+    metadata:
+      labels:
+        app: my-app
+        tier: front-python
+    spec:
+      containers:
+      - name: front-python
+        image: front-python:dev
+        ports:
+        - containerPort: 5000
+...
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: my-app
+        tier: backend
+    spec:
+      containers:
+      - name: backend
+        image: backend:dev
+        ports:
+        - containerPort: 5000
+...
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-configmap
+data:
+  default.conf: |
+    server {
+        server_name _;
+
+        location / {
+          proxy_pass http://front-python:5000;
+        }
+    }
+...

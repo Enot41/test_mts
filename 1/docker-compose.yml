@@ -3,7 +3,7 @@ services:
   front:
     image: nginx
     volumes:
-    - ./front/nginx-front.conf:/etc/nginx/conf.d/nginx-front.conf
+    - ./front/nginx-front.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
     networks:

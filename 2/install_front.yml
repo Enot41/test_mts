@@ -8,7 +8,7 @@
   - name: Copy nginx conf
     copy:
       src: front/nginx-front.conf
-      dest: /etc/nginx/conf.d/nginx-front.conf
+      dest: /etc/nginx/sites-available/default
     notify: 
       - Restart nginx
   handlers:
