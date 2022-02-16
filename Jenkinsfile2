@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    stages {
+        stage ('Copy source code') {
+            steps {
+                 git branch: 'main', url: 'https://github.com/Enot41/test_mts.git'   
+            }
+        }
+        stage ('Build docker') {
+             steps {
+                    sh 'docker-compose -f 2/docker-compose.yml up -d'
+             }
+        }
+        stage ('Build docker and run') {
+             steps { 
+                ansiblePlaybook credentialsId: 'c95358f7-37c8-4e60-8b8d-7dcf0c262fd3', disableHostKeyChecking: true, installation: 'ansible2', inventory: '2/hosts.yml', playbook: '2/install.yml'
+             }
+        }
+        
+        stage ('Delete or No') {
+            steps {
+                script {
+                    env.select = input message: 'Please enter YES or NO for delete container',
+                                parameters: [string(defaultValue: '',
+                                        description: '',
+                                        name: 'YES or NO for delete container')]
+                }
+                script {
+                    if (env.select == 'YES') {
+                        sh 'docker-compose -f 2/docker-compose.yml down --rmi local ' 
+                    }
+                    else {
+                        echo "Your don`t delete container"
+                    }
+            }
+            
+        }
+        }
+    }
+}
