@@ -8,7 +8,7 @@ pipeline {
         }
         stage ('Deploy to Kubernetes') {
             steps {
-                sshagent(credentials: ['46e65222-15b8-4f70-9bb9-6124d6516646'], ignoreMissing: true) {
+                sshagent(credentials: ['256ea17a-edd7-4b56-9494-365e58bb0c8a'], ignoreMissing: true) {
                     sh "scp -o StrictHostKeyChecking=no 3/service.yml gszi@192.168.137.147:/home/gszi/1"
                     sh "scp -o StrictHostKeyChecking=no 3/deployment.yml gszi@192.168.137.147:/home/gszi/1"
                     script {
@@ -33,7 +33,7 @@ pipeline {
                 }
                 script {
                     if (env.select == 'YES') {
-                        sshagent(credentials: ['46e65222-15b8-4f70-9bb9-6124d6516646'], ignoreMissing: true) {
+                        sshagent(credentials: ['256ea17a-edd7-4b56-9494-365e58bb0c8a'], ignoreMissing: true) {
                         try{
                             sh "ssh gszi@192.168.137.147 kubectl delete -f /home/gszi/1/."
                         }

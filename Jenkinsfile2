@@ -13,7 +13,7 @@ pipeline {
         }
         stage ('Build docker and run') {
              steps { 
-                ansiblePlaybook credentialsId: 'c95358f7-37c8-4e60-8b8d-7dcf0c262fd3', disableHostKeyChecking: true, installation: 'ansible2', inventory: '2/hosts.yml', playbook: '2/install.yml'
+                ansiblePlaybook credentialsId: '256ea17a-edd7-4b56-9494-365e58bb0c8a', disableHostKeyChecking: true, installation: 'ansible2', inventory: '2/hosts.yml', playbook: '2/install.yml'
              }
         }
         
